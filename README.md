@@ -73,9 +73,18 @@ The LSTM has the lowest error overall and on every forecast day, and its lead gr
 ## Project structure
 
 ```
+
+
+## Project structure
+
+```
 data/processed/   cleaned data, city summary and backtest outputs
 models/           LSTM scaling statistics (lstm_stats.json)
 results/          charts
+src/explore.py            first look at the raw data
+src/clean.py              cleans the raw data into data/processed/aqi_clean.csv
+src/prophet_test.py       single-city Prophet test (Delhi, next 3 days)
+src/evaluate_prophet.py   Prophet and persistence backtest, calm window
 src/train_lstm.py         trains the LSTM and runs the calm-window comparison
 src/backtest_winter.py    runs all three models on the winter window
 src/plot_results.py       draws the MAE-by-forecast-day chart
@@ -83,11 +92,17 @@ src/plot_results.py       draws the MAE-by-forecast-day chart
 
 ## Running
 
+Run from the project root, in this order:
+
 ```
 pip install -r requirements.txt
+python src/clean.py
+python src/evaluate_prophet.py
 python src/train_lstm.py
 python src/backtest_winter.py
 python src/plot_results.py
 ```
+
+`src/explore.py` and `src/prophet_test.py` are optional exploration scripts and are not needed for the results.
 
 The trained model file `models/lstm_aqi.keras` is excluded by `.gitignore`, so it is not in the repository. Running `src/train_lstm.py` recreates it. `src/backtest_winter.py` trains its own LSTM in memory and does not save a model.
